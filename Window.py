@@ -259,9 +259,9 @@ class main_gui(Tkinter.Tk):
     def askpath(self):
         path = Config.settings.get_gamelog_path()
         if os.path.isfile(path):
-            new_path = tkFileDialog.askopenfilename(initialfile=path, parent=self, filetypes=[('text files', '.txt')], title="Locate DwarfFortress/gamelog.txt")
+            new_path = tkFileDialog.askopenfilename(initialfile=path, parent=self, filetypes=[('log files', '.log'),('text files', '.txt'),('all files', '*.*')], title="Locate DwarfFortress/annc.log")
         else:
-            new_path = tkFileDialog.askopenfilename(initialdir=path, parent=self, filetypes=[('text files', '.txt')], title="Locate DwarfFortress/gamelog.txt")
+            new_path = tkFileDialog.askopenfilename(initialdir=path, parent=self, filetypes=[('log files', '.log'),('text files', '.txt'),('all files', '*.*')], title="Locate DwarfFortress/annc.log")
         if os.path.isfile(new_path):
             Config.settings.set_gamelog_path(new_path)
             Config.settings.save()
