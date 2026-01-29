@@ -10,6 +10,47 @@ This program was written for python 2.7.10, but now has python 3 support! It sho
 
 ## Configuration
 
+### **Enable Dwarf Fortress Logging**
+
+#### Install DFHack
+You will need DFHack for this. 
+* **Steam**: (https://store.steampowered.com/app/2346660/DFHack__Dwarf_Fortress_Modding_Engine/)
+* **Manual**: (https://github.com/DFHack/dfhack/releases)
+
+#### Tell DFHack How To Generate the Log
+Go to your Dwarf Fortress install directory and navigate to `hack\scripts\devel`. In Steam, the default path would be `C:\Program Files (x86)\Steam\steamapps\common\Dwarf Fortress\hack\scripts\devel`. In that folder, open `annc-monitor.lua` in a text editor.
+
+Find the section that looks like this:
+````
+function log(s, color)
+    dfhack.color(color)
+    print(dfhack.df2console(s))
+    dfhack.color(COLOR_RESET)
+end
+````
+
+And replace it with this:
+````
+function log(s, color)
+        dfhack.color(color)
+        print(dfhack.df2console(s))
+	file = io.open("annc.log", "a")
+	file:write(s)
+	file:write("\n")
+	file:close()
+        dfhack.color(COLOR_RESET)
+end
+````
+Save the file.
+
+#### Tell DFHack To Start Logging At Map Load
+**_You have to run Dwarf Fortress with DFHack installed once before continuing, as that's when the config files are generated._**
+
+Navigate to the `dfhack-config\init` folder in your Dwarf Fortress install. `C:\Program Files (x86)\Steam\steamapps\common\Dwarf Fortress\fhack-config\init` by default in Steam. Locate the `onLoad.init` file and edit it in a text editor. Add the following text to the bottom and save it.
+````
+devel/annc-monitor start
+````
+
 ### **Install**
 
 If you are running windows, download the latest release (https://github.com/dgomiller/AnnouncementWindow/releases) and unzip the folder anywhere on your computer. Click *AnnouncementWindow.exe* to launch.
