@@ -46,7 +46,7 @@ Save the file.
 #### Tell DFHack To Start Logging At Map Load
 **_You have to run Dwarf Fortress with DFHack installed once before continuing, as that's when the config files are generated._**
 
-Navigate to the `dfhack-config\init` folder in your Dwarf Fortress install. `C:\Program Files (x86)\Steam\steamapps\common\Dwarf Fortress\fhack-config\init` by default in Steam. Locate the `onLoad.init` file and edit it in a text editor. Add the following text to the bottom and save it.
+Navigate to the `dfhack-config\init` folder in your Dwarf Fortress install. `C:\Program Files (x86)\Steam\steamapps\common\Dwarf Fortress\dfhack-config\init` by default in Steam. Locate the `onLoad.init` file and edit it in a text editor. Add the following text to the bottom and save it.
 ````
 devel/annc-monitor start
 ````
