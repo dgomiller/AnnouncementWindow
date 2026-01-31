@@ -89,7 +89,7 @@
     },
     "JobSuspension": {
         "group": "JobSuspension",
-        "color": "#c60000",
+        "color": "#d90000",
         "categories": {
             "JobSuspension": {
                 "category": "JobSuspension",
@@ -102,7 +102,7 @@
     },
     "Production": {
         "group": "Production",
-        "color": "#930000",
+        "color": "#a400a4",
         "categories": {
             "EquipmentMismatch": {
                 "category": "EquipmentMismatch",
@@ -196,7 +196,7 @@
     },
     "deaths": {
         "group": "deaths",
-        "color": "#ffff00",
+        "color": "#ff5300",
         "categories": {
             "directDeaths": {
                 "category": "directDeaths",
@@ -223,7 +223,7 @@
     },
     "fishing": {
         "group": "fishing",
-        "color": "#0000ff",
+        "color": "#5564ea",
         "categories": {
             "Other/All": {
                 "category": "Other/All",
@@ -256,7 +256,7 @@
     },
     "intruders": {
         "group": "intruders",
-        "color": "#ff0000",
+        "color": "#ff8000",
         "categories": {
             "beast": {
                 "category": "beast",
@@ -505,7 +505,7 @@
             "world_age_change": {
                 "category": "world_age_change",
                 "show": {
-                    "0": false,
+                    "0": true,
                     "1": true
                 }
             }
@@ -513,7 +513,7 @@
     },
     "petition": {
         "group": "petition",
-        "color": "#8080c0",
+        "color": "#7d87db",
         "categories": {
             "guildhall": {
                 "category": "guildhall",
@@ -540,7 +540,7 @@
     },
     "visitors": {
         "group": "visitors",
-        "color": "#ff80c0",
+        "color": "#d6fa05",
         "categories": {
             "visit": {
                 "category": "visit",
@@ -586,7 +586,7 @@
     },
     "seasons": {
         "group": "seasons",
-        "color": "#ffff80",
+        "color": "#ffffff",
         "categories": {
             "seasons": {
                 "category": "seasons",
@@ -625,7 +625,7 @@
     },
     "system": {
         "group": "system",
-        "color": "#808080",
+        "color": "#a3a3a3",
         "categories": {
             "seed": {
                 "category": "seed",
@@ -652,7 +652,7 @@
     },
     "emotion": {
         "group": "emotion",
-        "color": "#804000",
+        "color": "#a85400",
         "categories": {
             "emotion": {
                 "category": "emotion",
@@ -665,7 +665,7 @@
     },
     "UNKNOWN": {
         "group": "UNKNOWN",
-        "color": "#ff8040",
+        "color": "#ffc1ed",
         "categories": {
             "unmatchedString": {
                 "category": "unmatchedString",

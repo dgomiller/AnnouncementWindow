@@ -131,27 +131,63 @@ class announcement_window(Tkinter.Frame):
         if self.vsb_pos == 1.0:
             self.yview("end")
 
+
     def insert_ann(self, ann):
         def insert():
-            anngroup=ann.get_group()
-            anncat=ann.get_category()
+            anngroup = ann.get_group()
+            anncat   = ann.get_category()
             tag_name = "%s.%s" % (anngroup, anncat)
+
+            # prefix ([group][category]) as in the original
             self.insert("end", "[%s][%s] " % (anngroup, anncat), '%s.elide' % tag_name)
-            regex=r"(\b"+'\\b|\\b'.join(WordColor.wd.get_all_group_words(anngroup))+"\\b)"
-            tokenized = re.split(regex, ann.get_text())
-            for token in tokenized:
-                hlwordcolor=WordColor.wd.get_colorname(token,anngroup)
-                self.insert("end", "%s" % token, tag_name)
-                if hlwordcolor:
-                    start="end-"+str(1+len(token))+"c"
-                    end="end-1c"
-                    self.tag_add(hlwordcolor,start,end)
+
+            text  = ann.get_text()
+            words = WordColor.wd.get_all_group_words(anngroup) or []
+
+            if words:
+                # Build regex that captures the WORD and the following separator (space/punct/EOL).
+                # We tag only the word, then re-emit the exact separator so spacing/punctuation remains intact.
+                pattern = r'(\b(?:' + '|'.join(map(re.escape, words)) + r')\b)(?P<sep>\s|[.,;:!?)\]]|$)'
+                regex = re.compile(pattern)
+
+                pos = 0
+                for m in regex.finditer(text):
+                    # 1) Text before match (unchanged)
+                    if m.start() > pos:
+                        self.insert("end", text[pos:m.start()], tag_name)
+
+                    # 2) Matched word
+                    word = m.group(1)
+                    self.insert("end", word, tag_name)
+
+                    # Tag the word span we just inserted
+                    colorname = WordColor.wd.get_colorname(word, anngroup)
+                    if colorname:
+                        start = "end-" + str(1 + len(word)) + "c"
+                        end   = "end-1c"
+                        self.tag_add(colorname, start, end)
+
+                    # 3) The exact following separator (space/punct/EOL)
+                    sep = m.group('sep')
+                    if sep:
+                        self.insert("end", sep, tag_name)
+
+                    pos = m.end()
+
+                # 4) Remainder after the last match
+                if pos < len(text):
+                    self.insert("end", text[pos:], tag_name)
+            else:
+                # No color words configured for this group — insert as-is
+                self.insert("end", text, tag_name)
+
             self.trim_announcements(tag_name)
 
         if ann.get_show(self.id):
             insert()
         elif Config.settings.save_hidden_announcements:
             insert()
+
 
     def trim_announcements(self, tag_name):
         if Config.settings.trim_announcements[self.id]:

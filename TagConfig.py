@@ -90,7 +90,7 @@ class ExpressionBar(Tkinter.Frame):
 
         self.entry = Tkinter.Entry(
             self,
-            width=75,
+            width=300,
             validate='key',
             validatecommand=(modcommand, '%P'),
             textvariable=self.string_
@@ -239,6 +239,9 @@ class GroupBar(Tkinter.Frame):
         self.dialog = dialog
         self.is_grid = False
 
+        if not hasattr(self.group, "color") or not self.group.color:
+            self.group.color = "#808080"
+
         self.expand_button = Tkinter.Button(self, text="+", command=self.expand, width=1)
         self.expand_button.grid(row=0, column=0, sticky='w')
 
@@ -250,7 +253,8 @@ class GroupBar(Tkinter.Frame):
         # Color chooser for the group color if supported by model
 
         # Get current group color (defaults to gray if not set)
-        current_color = getattr(self.group, "color", "#808080")
+        #current_color = getattr(self.group, "color", "#808080")
+        current_color = self.group.color
 
         self.color_button = Tkinter.Button(
             header,
@@ -314,30 +318,45 @@ class GroupBar(Tkinter.Frame):
             row_ += 1
 
     
+    
     def set_color(self):
-        new_color = tkColorChooser.askcolor(parent=self)[1]
-        if new_color is not None:
+        # Determine the current color to preselect
+        current_color = getattr(self.group, "color", None)
+        if not current_color:
+            try:
+                current_color = self.color_button.cget("fg")
+            except Exception:
+                current_color = "#808080"
+
+        # Open the chooser with the current color preselected
+        _rgb_tuple, chosen_hex = tkColorChooser.askcolor(
+            parent=self,
+            initialcolor=current_color
+        )
+
+        if chosen_hex is not None:
             try:
                 # Persist to your model
                 if hasattr(self.group, "set_color"):
-                    self.group.set_color(new_color)
+                    self.group.set_color(chosen_hex)
                 else:
-                    self.group.color = new_color
+                    self.group.color = chosen_hex
 
-                # Re-style the button: text = chosen color, background = black
+                # Re-style the button to reflect the new color
                 self.color_button.config(
-                    fg=new_color,
+                    fg=chosen_hex,
                     bg="black",
-                    activeforeground=new_color,
+                    activeforeground=chosen_hex,
                     activebackground="black",
                 )
 
-                # If you mark UI dirty for saving, keep that line here
+                # Mark UI dirty if you track that state
                 global FILTERS_DIRTY
                 FILTERS_DIRTY = True
 
             except Exception:
                 pass
+
 
     def expand(self):
         """
@@ -447,59 +466,72 @@ class MainDialog(Tkinter.Toplevel):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
         self.body_frame.grid_columnconfigure(0, weight=1)
-        self.body_frame.grid_rowconfigure(1, weight=1)
+        self.body_frame.grid_rowconfigure(0, weight=1)
+        self.body_frame.grid_rowconfigure(1, weight=0)
 
-    # Build a scrollable area of GroupBars
+
     def body(self, master):
+        # Canvas + inner content frame
         canvas = Tkinter.Canvas(master, borderwidth=0, highlightthickness=0)
         frame = Tkinter.Frame(canvas)
-        
+
+        # Scrollbars
         vscroll = Tkinter.Scrollbar(master, orient="vertical", command=canvas.yview)
-        hscroll = Tkinter.Scrollbar(master, orient="horizontal", command=canvas.xview)
+
+        # Fixed-height wrapper row for the horizontal scrollbar (prevents height changes)
+        sb_row = Tkinter.Frame(master, height=18)            # pick a height you like (16–18 typical)
+        sb_row.grid(row=1, column=0, columnspan=2, sticky="ew")
+        sb_row.grid_propagate(False)                         # lock the row height
+        sb_row.pack_propagate(False)
+
+        hscroll = Tkinter.Scrollbar(sb_row, orient="horizontal", command=canvas.xview)
+        hscroll.configure(width=16)                          # scrollbar thickness in px (height for horizontal)
+        hscroll.pack(side="top", fill="x", expand=False, pady=0, ipady=0)
+
+        # Wire canvas to both scrollbars
         canvas.configure(yscrollcommand=vscroll.set, xscrollcommand=hscroll.set)
 
-        # Layout: [col 1 = canvas][col 2 = vscroll]
-        canvas.grid(row=0, column=0, sticky="nsew")   # vertical stick only (no E/W stretch)
+        # Layout: [col 0 = canvas][col 1 = vscroll]; hscroll is inside sb_row
+        canvas.grid(row=0, column=0, sticky="nsew")
         vscroll.grid(row=0, column=1, sticky="ns")
-        hscroll.grid(row=1, column=0, sticky="ew")  # bottom scrollbar spans under the canvas
+        #hscroll.pack(side="top", fill="x")                  # pack inside the fixed-height wrapper
 
-        # Do NOT give any column horizontal weight here
-        
-        master.grid_columnconfigure(0, weight=1)    # canvas column: no horizontal growth
-        master.grid_columnconfigure(1, weight=0)    # vscroll column
-        master.grid_rowconfigure(0, weight=1)       # allow vertical stretch
-        master.grid_rowconfigure(1, weight=0)       # hscroll row doesn't need vertical weight
+        # Grid weights: canvas grows; vscroll fixed; hscroll row fixed height
+        master.grid_columnconfigure(0, weight=1)            # canvas column grows horizontally
+        master.grid_columnconfigure(1, weight=0)            # vscroll column remains fixed
+        master.grid_rowconfigure(0, weight=1)               # canvas row grows vertically
+        master.grid_rowconfigure(1, weight=0)               # hscroll wrapper row stays fixed
 
-
-        
-
-        # Windowing for the frame inside the canvas
+        # Put the content frame into the canvas
         window_id = canvas.create_window((0, 0), window=frame, anchor="nw")
-
+        self._window_id = window_id
+        
+        # Keep scrollregion in sync with content size
         def _on_frame_configure(event):
-            canvas.configure(scrollregion=canvas.bbox("all"))
-
-        def _on_canvas_configure(event):
             try:
-                # Measure the content's natural width
-                frame.update_idletasks()
-                natural = frame.winfo_reqwidth()
-
-                # Use the larger of: content width or current canvas width
-                new_width = max(natural, event.width)
-
-                # Only update if it actually changed (avoids loops)
-                current = canvas.itemcget(window_id, "width")
-                current = int(float(current)) if current else 0
-                if new_width != current:
-                    canvas.itemconfig(window_id, width=new_width)
-
-                # Keep scrollregion in sync for both axes
                 canvas.configure(scrollregion=canvas.bbox("all"))
             except Exception:
                 pass
 
+        # Smart width handling:
+        # - If the canvas is wider than the content, expand the inner frame to match (no horizontal scroll needed)
+        # - If the canvas is narrower than the content, keep the content width (horizontal scrollbar remains useful)
+        
+        def _on_canvas_configure(event):
+            try:
+                # keep scrollregion current
+                canvas.configure(scrollregion=canvas.bbox("all"))
 
+                # grow inner frame to at least the canvas height (no big blank gap)
+                frame.update_idletasks()
+                natural_h = frame.winfo_reqheight()
+                new_h = max(natural_h, event.height)
+                canvas.itemconfig(window_id, height=new_h)
+            except Exception:
+                pass
+
+
+        # Bind updates
         frame.bind("<Configure>", _on_frame_configure)
         canvas.bind("<Configure>", _on_canvas_configure)
 
@@ -515,7 +547,8 @@ class MainDialog(Tkinter.Toplevel):
             gbar = GroupBar(frame, group, dialog=self)
             gbar.grid(row=row_, column=0, sticky="w", padx=4, pady=2)
             row_ += 1
-        
+
+        # Expose refs for sizing elsewhere
         self._canvas = canvas
         self._inner_frame = frame
         self._vscroll = vscroll
@@ -523,14 +556,37 @@ class MainDialog(Tkinter.Toplevel):
 
         return frame
 
+
     def resize(self):
         """
         Re-pack / adjust geometry after expand/collapse events.
         """
         try:
-            self.update_idletasks()
+            #self.update_idletasks()
+            self.after_idle(self.refresh_scrollarea)
         except Exception:
             pass
+    
+    def refresh_scrollarea(self):
+        """Recompute canvas scrollregion and ensure the inner window height matches the visible canvas."""
+        try:
+            # Make sure all newly expanded/collapsed widgets are realized
+            self._inner_frame.update_idletasks()
+
+            # Update scrollregion to the new content size
+            self._canvas.configure(scrollregion=self._canvas.bbox("all"))
+
+            # Remove the vertical blank band by ensuring the inner window is at least canvas height
+            natural_h = self._inner_frame.winfo_reqheight()
+            visible_h = self._canvas.winfo_height()
+            new_h = max(natural_h, visible_h)
+
+            # Apply to the created inner window
+            if hasattr(self, "_window_id") and self._window_id:
+                self._canvas.itemconfig(self._window_id, height=new_h)
+        except Exception:
+            pass
+
 
     def _set_initial_width(self):
         """Clamp the canvas width to the natural content width (plus a bit),
