@@ -296,6 +296,10 @@ class GroupBar(Tkinter.Frame):
                 col_ += 1
 
         gridrow.grid(row=0, column=1, sticky="w")
+        
+        if hasattr(self.dialog, "_min_header_row") is False:
+            self.dialog._min_header_row = gridrow
+
         title_frame.grid(row=0, column=0, sticky="w")
 
         # Populate categories
@@ -395,7 +399,7 @@ class MainDialog(Tkinter.Toplevel):
 
         if parent.winfo_viewable():
             self.transient(parent)
-        self.resizable(0, 1)
+        self.resizable(1, 1)
         self.title("Filter Configuration")
         self.result = None
 
@@ -421,6 +425,9 @@ class MainDialog(Tkinter.Toplevel):
     def gen_body(self):
         self.body_frame = Tkinter.Frame(self)
         self.initial_focus = self.body(self.body_frame)
+        # Size the canvas after layout completes
+        self.after(0, self._set_initial_width)
+
 
         if not util.platform.osx:
             menu = Tkinter.Menu(self)
@@ -434,25 +441,37 @@ class MainDialog(Tkinter.Toplevel):
             cancel_button = Tkinter.Button(frame, text="Cancel", command=self.cancel)
             ok_button.pack(side=LEFT)
             cancel_button.pack(side=RIGHT)
-            frame.grid(row=0, column=1, sticky='sw')
+            frame.grid(row=0, column=0, sticky='sw')
 
-        self.body_frame.grid(row=1, column=1, sticky="nsew")
-        self.grid_columnconfigure(1, weight=1)
+        self.body_frame.grid(row=1, column=0, sticky="nsew")
+        self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
-        self.body_frame.grid_columnconfigure(1, weight=1)
+        self.body_frame.grid_columnconfigure(0, weight=1)
         self.body_frame.grid_rowconfigure(1, weight=1)
 
     # Build a scrollable area of GroupBars
     def body(self, master):
         canvas = Tkinter.Canvas(master, borderwidth=0, highlightthickness=0)
         frame = Tkinter.Frame(canvas)
+        
         vscroll = Tkinter.Scrollbar(master, orient="vertical", command=canvas.yview)
-        canvas.configure(yscrollcommand=vscroll.set)
+        hscroll = Tkinter.Scrollbar(master, orient="horizontal", command=canvas.xview)
+        canvas.configure(yscrollcommand=vscroll.set, xscrollcommand=hscroll.set)
 
-        vscroll.grid(row=0, column=2, sticky="ns")
-        canvas.grid(row=0, column=1, sticky="nsew")
-        master.grid_columnconfigure(1, weight=1)
-        master.grid_rowconfigure(0, weight=1)
+        # Layout: [col 1 = canvas][col 2 = vscroll]
+        canvas.grid(row=0, column=0, sticky="nsew")   # vertical stick only (no E/W stretch)
+        vscroll.grid(row=0, column=1, sticky="ns")
+        hscroll.grid(row=1, column=0, sticky="ew")  # bottom scrollbar spans under the canvas
+
+        # Do NOT give any column horizontal weight here
+        
+        master.grid_columnconfigure(0, weight=1)    # canvas column: no horizontal growth
+        master.grid_columnconfigure(1, weight=0)    # vscroll column
+        master.grid_rowconfigure(0, weight=1)       # allow vertical stretch
+        master.grid_rowconfigure(1, weight=0)       # hscroll row doesn't need vertical weight
+
+
+        
 
         # Windowing for the frame inside the canvas
         window_id = canvas.create_window((0, 0), window=frame, anchor="nw")
@@ -461,11 +480,25 @@ class MainDialog(Tkinter.Toplevel):
             canvas.configure(scrollregion=canvas.bbox("all"))
 
         def _on_canvas_configure(event):
-            # make the inner frame width match the canvas width
             try:
-                canvas.itemconfig(window_id, width=event.width)
+                # Measure the content's natural width
+                frame.update_idletasks()
+                natural = frame.winfo_reqwidth()
+
+                # Use the larger of: content width or current canvas width
+                new_width = max(natural, event.width)
+
+                # Only update if it actually changed (avoids loops)
+                current = canvas.itemcget(window_id, "width")
+                current = int(float(current)) if current else 0
+                if new_width != current:
+                    canvas.itemconfig(window_id, width=new_width)
+
+                # Keep scrollregion in sync for both axes
+                canvas.configure(scrollregion=canvas.bbox("all"))
             except Exception:
                 pass
+
 
         frame.bind("<Configure>", _on_frame_configure)
         canvas.bind("<Configure>", _on_canvas_configure)
@@ -482,6 +515,11 @@ class MainDialog(Tkinter.Toplevel):
             gbar = GroupBar(frame, group, dialog=self)
             gbar.grid(row=row_, column=0, sticky="w", padx=4, pady=2)
             row_ += 1
+        
+        self._canvas = canvas
+        self._inner_frame = frame
+        self._vscroll = vscroll
+        self._hscroll = hscroll
 
         return frame
 
@@ -492,6 +530,61 @@ class MainDialog(Tkinter.Toplevel):
         try:
             self.update_idletasks()
         except Exception:
+            pass
+
+    def _set_initial_width(self):
+        """Clamp the canvas width to the natural content width (plus a bit),
+        so the dialog isn't excessively wide; overflow uses the bottom scrollbar."""
+        try:
+            # Measure the natural width of the inner content
+            self._inner_frame.update_idletasks()
+            natural = self._inner_frame.winfo_reqwidth()
+
+            # Measure the TRUE minimum from the Window Visibility (Y/N) header
+            min_from_header = None
+            header = getattr(self, "_min_header_row", None)
+            if header is not None:
+                header.update_idletasks()
+                min_from_header = header.winfo_reqwidth()
+
+            # Tweak these to taste:
+            #MIN_W = 20    # a little wider than the Y/N area
+            MAX_W = 520    # prevents sprawling
+            PAD   = 32     # small gutter
+            
+            if min_from_header is not None:
+                MIN_W = min_from_header + PAD
+            else:
+                MIN_W = 300  # fallback safety
+
+            target = max(MIN_W, min(natural + PAD, MAX_W))
+
+            # Apply width to the canvas; height handled by layout + vscroll
+            self._canvas.configure(width=target)
+            
+            # Compute outer window width = canvas + vertical scrollbar + small gutters
+            self.update_idletasks()
+            outer_w = target + self._vscroll.winfo_reqwidth() + 8   # +8 for a tiny right gutter
+            outer_h = self.winfo_reqheight()
+
+            # Apply toplevel geometry so the window matches this width
+            # (We preserve the current Y-size; vertical stretch is handled by grid + vscroll)
+            x = self.winfo_rootx() if self.winfo_ismapped() else 100
+            y = self.winfo_rooty() if self.winfo_ismapped() else 100
+
+            self.geometry(f"{outer_w}x{outer_h}+{x}+{y}")
+            #self.geometry(f"{outer_w}x{outer_h}")
+
+            # Also set a sensible minimum
+            #self.minsize(outer_w, outer_h)
+            self.minsize(min_w + self._vscroll.winfo_reqwidth() + 6, outer_h)
+            # # Set a minimum dialog size so it doesn't collapse too small
+            #self.update_idletasks()
+            #self.minsize(target + self._vscroll.winfo_reqwidth(),
+            #            self.winfo_reqheight())
+
+        except Exception:
+            # Fail-safe: ignore errors; scrollbars still work
             pass
 
     # Persist changes when user hits Accept
