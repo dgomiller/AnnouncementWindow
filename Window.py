@@ -4,11 +4,13 @@ if sys.version_info.major == 2:
     import tkFileDialog
     import tkColorChooser
     import tkFont
+    import tkSimpleDialog
 elif  sys.version_info.major == 3:
     import tkinter as Tkinter
     import tkinter.filedialog as tkFileDialog
     import tkinter.colorchooser as tkColorChooser
     import tkinter.font as tkFont
+    import tkinter.simpledialog as tkSimpleDialog
 else:
     raise UserWarning("unknown python version?!")
 
@@ -44,6 +46,16 @@ class announcement_window(Tkinter.Frame):
         self.init_pulldown()
 
     def init_text_window(self):
+        # Title Label
+        try:
+            title = Config.settings.window_titles[self.id]
+        except:
+            title = "Window %d" % self.id
+            
+        self.title_label = Tkinter.Label(self, text=title, bg="gray", fg="white", font=("Helvetica", 10, "bold"))
+        self.title_label.pack(side="top", fill="x")
+        self.title_label.bind("<Double-Button-1>", self.edit_title)
+
         self.text = Tkinter.Text(self, bg="black", wrap="word", font=self.customFont)
         self.vsb = Tkinter.Scrollbar(self, orient="vertical", command=self.text.yview)
         self.text.configure(yscrollcommand=self.vsb.set)
@@ -65,6 +77,13 @@ class announcement_window(Tkinter.Frame):
         self.tag_cget = self.text.tag_cget
         self.config = self.text.config
         self.yview = self.text.yview
+
+    def edit_title(self, event):
+        new_title = tkSimpleDialog.askstring("Rename Window", "Enter new title:", initialvalue=Config.settings.window_titles[self.id], parent=self)
+        if new_title:
+            self.title_label.config(text=new_title)
+            Config.settings.window_titles[self.id] = new_title
+            Config.settings.save()
 
     def init_pulldown(self):
         self.pulldown = Tkinter.Menu(self, tearoff=0)
@@ -212,7 +231,12 @@ class main_gui(Tkinter.Tk):
         self.cpu_max = {}
         self.py = None
         if self.gui_data is None:
-            self.gui_data = {"sash_place":int(700 / 3.236), "font_w0":self.customFont.actual(), "font_w1":self.customFont.actual()}
+            self.gui_data = {"sash_place":int(700 / 3.236)}
+
+        # Ensure font data exists for all windows
+        for i in range(Config.settings.window_count):
+            if 'font_w%s' % i not in self.gui_data:
+                self.gui_data['font_w%s' % i] = self.customFont.actual()
         self.locked = False
         self.init_menu()
         self.init_windows()
@@ -256,14 +280,31 @@ class main_gui(Tkinter.Tk):
         self.cpu_max["MEM"] = []
 
     def init_windows(self):
-        self.panel = Tkinter.PanedWindow(self, orient="vertical", sashwidth=5)
-        self.panel.pack(fill="both", expand=1)
-        for i in range(0, 2):
+        # self.panel = Tkinter.PanedWindow(self, orient="vertical", sashwidth=5)
+        # self.panel.pack(fill="both", expand=1)
+
+        cols = 2
+        for i in range(0, Config.settings.window_count):
             self.announcement_windows[i] = announcement_window(self, i)
-        self.panel.add(self.announcement_windows[0])
-        self.panel.add(self.announcement_windows[1])
-        self.panel.update_idletasks()
-        self.panel.sash_place(0, 0, self.gui_data["sash_place"])  # TODO: update to support multiple sashes
+            row = i // cols
+            col = i % cols
+            self.announcement_windows[i].grid(row=row, column=col, sticky="nsew")
+        
+        # Configure Grid Weights
+        # Columns
+        for c in range(cols):
+            self.grid_columnconfigure(c, weight=1)
+        # Rows
+        import math
+        rows = int(math.ceil(Config.settings.window_count / float(cols)))
+        for r in range(rows):
+            self.grid_rowconfigure(r, weight=1)
+
+        # self.panel.update_idletasks()
+        # try:
+        #     self.panel.sash_place(0, 0, self.gui_data["sash_place"])
+        # except:
+        #     pass
 
     def gen_tags(self):
         Filters.expressions.reload()
@@ -273,7 +314,7 @@ class main_gui(Tkinter.Tk):
             announcement_win[1].config(state="disabled")
 
     def clean_exit(self):
-        self.gui_data["sash_place"] = self.panel.sash_coord(0)[1]
+        # self.gui_data["sash_place"] = self.panel.sash_coord(0)[1]
         Config.settings.save_gui_data(self.gui_data)
         self.destroy()
 
