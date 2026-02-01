@@ -106,5 +106,3 @@ Settings.cfg
 gui.dat
 gui.dat3
 setup.py
-reproduce_issue_v2.py
-debug_issue.py
