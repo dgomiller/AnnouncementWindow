@@ -103,7 +103,7 @@ class announcement_filter(object):
         self.pickle_path = Config.settings.filters_pickle_path
         self.filters_path = Config.settings.filters_path
         self.filter_format = '\[(?P<group>\w+)\]\[(?P<category>\w+|\s*)\]\s*\"(?P<expression>.+)\"'
-        self.window_count = 0
+        self.window_count = Config.settings.window_count
         self.reload()
 
     def reload(self):
@@ -169,7 +169,8 @@ class announcement_filter(object):
         return None, None
 
     def add_window(self, window):
-        self.window_count += 1
+        if window >= self.window_count:
+            self.window_count = window + 1
         for group in self.groups.items():
             for cat in group[1].categories.items():
                 cat[1].add_window(window)

@@ -6,22 +6,34 @@
             "hitevents_miss": {
                 "category": "hitevents_miss",
                 "show": {
-                    "0": true,
-                    "1": false
+                    "0": false,
+                    "1": false,
+                    "2": true,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "status": {
                 "category": "status",
                 "show": {
-                    "0": true,
-                    "1": false
+                    "0": false,
+                    "1": false,
+                    "2": true,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "block_dodge": {
                 "category": "block_dodge",
                 "show": {
-                    "0": true,
-                    "1": false
+                    "0": false,
+                    "1": false,
+                    "2": true,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
@@ -33,43 +45,67 @@
             "hitevents": {
                 "category": "hitevents",
                 "show": {
-                    "0": true,
-                    "1": false
+                    "0": false,
+                    "1": false,
+                    "2": true,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "status": {
                 "category": "status",
                 "show": {
-                    "0": true,
-                    "1": false
+                    "0": false,
+                    "1": false,
+                    "2": true,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "battle": {
                 "category": "battle",
                 "show": {
-                    "0": true,
-                    "1": false
+                    "0": false,
+                    "1": false,
+                    "2": true,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "breath": {
                 "category": "breath",
                 "show": {
-                    "0": true,
-                    "1": false
+                    "0": false,
+                    "1": false,
+                    "2": true,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "gore": {
                 "category": "gore",
                 "show": {
-                    "0": true,
-                    "1": false
+                    "0": false,
+                    "1": false,
+                    "2": true,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "strikes": {
                 "category": "strikes",
                 "show": {
-                    "0": true,
-                    "1": false
+                    "0": false,
+                    "1": false,
+                    "2": true,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
@@ -82,88 +118,128 @@
                 "category": "trance",
                 "show": {
                     "0": true,
-                    "1": false
+                    "1": false,
+                    "2": true,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
     },
     "JobSuspension": {
         "group": "JobSuspension",
-        "color": "#d90000",
+        "color": "#c60000",
         "categories": {
             "JobSuspension": {
                 "category": "JobSuspension",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": true,
+                    "2": true,
+                    "3": true,
+                    "4": true,
+                    "5": true
                 }
             }
         }
     },
     "Production": {
         "group": "Production",
-        "color": "#a400a4",
+        "color": "#930000",
         "categories": {
             "EquipmentMismatch": {
                 "category": "EquipmentMismatch",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
-            "foodAndDrinkCancellations": {
-                "category": "foodAndDrinkCancellations",
+            "foodAndDrinkCancelations": {
+                "category": "foodAndDrinkCancelations",
                 "show": {
-                    "0": false,
-                    "1": false
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "creatureInterruption": {
                 "category": "creatureInterruption",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "production": {
                 "category": "production",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": true,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
-            "farmCancellations": {
-                "category": "farmCancellations",
+            "farmCancelations": {
+                "category": "farmCancelations",
                 "show": {
-                    "0": false,
-                    "1": false
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
-            "cancellations": {
-                "category": "cancellations",
+            "misc": {
+                "category": "misc",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
-            "dfhack_automation": {
-                "category": "dfhack_automation",
+            "cancelations": {
+                "category": "cancelations",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
     },
     "misc": {
         "group": "misc",
-        "color": "#ffffff",
+        "color": "#FFF",
         "categories": {
             "spam": {
                 "category": "spam",
                 "show": {
-                    "0": false,
-                    "1": false
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
@@ -175,8 +251,12 @@
             "Other/All": {
                 "category": "Other/All",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": true,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
@@ -189,47 +269,117 @@
                 "category": "beekeeping",
                 "show": {
                     "0": false,
-                    "1": true
+                    "1": true,
+                    "2": true,
+                    "3": true,
+                    "4": true,
+                    "5": true
                 }
             }
         }
     },
     "deaths": {
         "group": "deaths",
-        "color": "#ff5300",
+        "color": "#ffff00",
         "categories": {
             "directDeaths": {
                 "category": "directDeaths",
                 "show": {
                     "0": true,
-                    "1": false
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "foundDeaths": {
                 "category": "foundDeaths",
                 "show": {
                     "0": true,
-                    "1": true
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "slaughtering": {
                 "category": "slaughtering",
                 "show": {
-                    "0": false,
-                    "1": false
+                    "0": true,
+                    "1": true,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
+                }
+            }
+        }
+    },
+    "dfhack": {
+        "group": "dfhack",
+        "color": "#ffffff",
+        "categories": {
+            "elected": {
+                "category": "elected",
+                "show": {
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
+                }
+            },
+            "misc": {
+                "category": "misc",
+                "show": {
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
+                }
+            },
+            "workshopCompletion": {
+                "category": "workshopCompletion",
+                "show": {
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
+                }
+            },
+            "automation": {
+                "category": "automation",
+                "show": {
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
     },
     "fishing": {
         "group": "fishing",
-        "color": "#5564ea",
+        "color": "#0000ff",
         "categories": {
             "Other/All": {
                 "category": "Other/All",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
@@ -242,41 +392,61 @@
                 "category": "necromancy",
                 "show": {
                     "0": true,
-                    "1": false
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "werebeast": {
                 "category": "werebeast",
                 "show": {
                     "0": true,
-                    "1": false
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
     },
     "intruders": {
         "group": "intruders",
-        "color": "#ff8000",
+        "color": "#ff0000",
         "categories": {
             "beast": {
                 "category": "beast",
                 "show": {
                     "0": true,
-                    "1": true
+                    "1": false,
+                    "2": true,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "intruders": {
                 "category": "intruders",
                 "show": {
                     "0": true,
-                    "1": true
+                    "1": false,
+                    "2": true,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "ghost": {
                 "category": "ghost",
                 "show": {
                     "0": true,
-                    "1": true
+                    "1": false,
+                    "2": true,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
@@ -288,8 +458,12 @@
             "mandates": {
                 "category": "mandates",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
@@ -301,36 +475,23 @@
             "enviromentalHazard": {
                 "category": "enviromentalHazard",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": true,
+                    "5": false
                 }
             },
             "mining": {
                 "category": "mining",
                 "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "cancellation": {
-                "category": "cancellation",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "collapse": {
-                "category": "collapse",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "events": {
-                "category": "events",
-                "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
@@ -342,22 +503,34 @@
             "moods": {
                 "category": "moods",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "depression": {
                 "category": "depression",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "tantrum": {
                 "category": "tantrum",
                 "show": {
                     "0": true,
-                    "1": true
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
@@ -369,8 +542,12 @@
             "Other/All": {
                 "category": "Other/All",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
@@ -382,178 +559,95 @@
             "training": {
                 "category": "training",
                 "show": {
-                    "0": false,
-                    "1": false
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "vermin": {
                 "category": "vermin",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "grown": {
                 "category": "grown",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "birth": {
                 "category": "birth",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "drink": {
                 "category": "drink",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "catAdoption": {
                 "category": "catAdoption",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
     },
-    "missing": {
-        "group": "missing",
-        "color": "#ffff00",
+    "social": {
+        "group": "social",
+        "color": "#80ff00",
         "categories": {
             "missing": {
                 "category": "missing",
                 "show": {
                     "0": true,
-                    "1": false
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
-            }
-        }
-    },
-    "life_events": {
-        "group": "life_events",
-        "color": "#80ff00",
-        "categories": {
+            },
             "social": {
                 "category": "social",
                 "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "birth": {
-                "category": "birth",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "growth": {
-                "category": "growth",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "parenting": {
-                "category": "parenting",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "skills": {
-                "category": "skills",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            }
-        }
-    },
-    "government": {
-        "group": "government",
-        "color": "#80ff00",
-        "categories": {
-            "title": {
-                "category": "title",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "elected": {
-                "category": "elected",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "dwarfhome": {
-                "category": "dwarfhome",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "world_age_change": {
-                "category": "world_age_change",
-                "show": {
                     "0": true,
-                    "1": true
-                }
-            }
-        }
-    },
-    "petition": {
-        "group": "petition",
-        "color": "#7d87db",
-        "categories": {
-            "guildhall": {
-                "category": "guildhall",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "temple": {
-                "category": "temple",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "visitors": {
-                "category": "visitors",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            }
-        }
-    },
-    "visitors": {
-        "group": "visitors",
-        "color": "#d6fa05",
-        "categories": {
-            "visit": {
-                "category": "visit",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "conversation": {
-                "category": "conversation",
-                "show": {
-                    "0": false,
-                    "1": true
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
@@ -565,8 +659,12 @@
             "professionChange": {
                 "category": "professionChange",
                 "show": {
-                    "0": false,
-                    "1": false
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
@@ -579,20 +677,28 @@
                 "category": "migrants",
                 "show": {
                     "0": true,
-                    "1": true
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
     },
     "seasons": {
         "group": "seasons",
-        "color": "#ffffff",
+        "color": "#ffff80",
         "categories": {
             "seasons": {
                 "category": "seasons",
                 "show": {
                     "0": true,
-                    "1": true
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
@@ -605,7 +711,11 @@
                 "category": "weather",
                 "show": {
                     "0": true,
-                    "1": true
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
@@ -618,60 +728,84 @@
                 "category": "trading",
                 "show": {
                     "0": false,
-                    "1": true
+                    "1": true,
+                    "2": true,
+                    "3": true,
+                    "4": true,
+                    "5": true
                 }
             }
         }
     },
     "system": {
         "group": "system",
-        "color": "#a3a3a3",
+        "color": "#808080",
         "categories": {
             "seed": {
                 "category": "seed",
                 "show": {
-                    "0": false,
-                    "1": false
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "system": {
                 "category": "system",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             },
             "load": {
                 "category": "load",
                 "show": {
-                    "0": false,
-                    "1": true
+                    "0": true,
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
     },
     "emotion": {
         "group": "emotion",
-        "color": "#a85400",
+        "color": "#804000",
         "categories": {
             "emotion": {
                 "category": "emotion",
                 "show": {
                     "0": true,
-                    "1": false
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
     },
     "UNKNOWN": {
         "group": "UNKNOWN",
-        "color": "#ffc1ed",
+        "color": "#FF0",
         "categories": {
             "unmatchedString": {
                 "category": "unmatchedString",
                 "show": {
                     "0": true,
-                    "1": true
+                    "1": false,
+                    "2": false,
+                    "3": false,
+                    "4": false,
+                    "5": false
                 }
             }
         }
