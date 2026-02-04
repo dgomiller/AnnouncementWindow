@@ -127,11 +127,8 @@
 [General][silver] "peddler"
 [General][white] "prophet,pilgrim,monk"
 [General][orange] "messenger"
-[General][red] "dwarf,dwarf,dwarven,dwarven"
 [General][orange] "cat (tame)"
-[General][yellow] "human,human"
-[General][teal] "elf,elf,elven,elven"
-[General][green] "goblin,goblin"
+
 
 #Noble
 [General][yellow] "queen,king,mayor,baronness,baron,chief medical dwarf,outpost liaison,manager,captain of the guard,militia captain,lady consort,militia commander"
