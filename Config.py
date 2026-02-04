@@ -59,7 +59,9 @@ class config(object):
         self.showgroups = False
         self.load_previous_announcements = False
         self.save_hidden_announcements = False
-        self.trim_announcements = [0, 0]
+        self.window_count = 2
+        self.trim_announcements = [0] * self.window_count
+        self.window_titles = ["Window %d" % i for i in range(self.window_count)]
         self.default_bg="#000000"
         self.word_color_dict={"white":["#FFFFFF","#000000"],"silver":["#C0C0C0","#000000"],"gray":["#808080","#000000"],"black":["#000000","#000000"],"red":["#FF0000","#000000"],"maroon":["#d90000","#000000"],"yellow":["#FFFF00","#000000"],"olive":["#808000","#000000"],"lime":["#00FF00","#000000"],"green":["#008000","#000000"],"aqua":["#00FFFF","#000000"],"teal":["#008080","#000000"],"blue":["#0080c0","#000000"],"navy":["#5564ea","#000000"],"fuchsia":["#FF00FF","#000000"],"orange":["#ff8000","#000000"]}
 
@@ -69,8 +71,10 @@ class config(object):
             self.parser.set("Settings", 'gamelog_path', self.gamelogpath)
             self.parser.set("Settings", 'save_hidden_announcements', str(self.save_hidden_announcements))
             self.parser.set("Settings", 'load_previous_announcements', str(self.load_previous_announcements))
-            self.parser.set("Settings", 'trim_announcements_0', str(self.trim_announcements[0]))
-            self.parser.set("Settings", 'trim_announcements_1', str(self.trim_announcements[1]))
+            self.parser.set("Settings", 'window_count', str(self.window_count))
+            for i in range(self.window_count):
+                self.parser.set("Settings", 'trim_announcements_%d' % i, str(self.trim_announcements[i]))
+                self.parser.set("Settings", 'window_title_%d' % i, str(self.window_titles[i]))
             self.parser.add_section("Colors")
             self.parser.set("Colors", 'default_background', str(self.default_bg))
             for color in self.word_color_dict:
@@ -81,8 +85,26 @@ class config(object):
             self.gamelogpath = self.parser.get("Settings", "gamelog_path").replace('"', '')
             self.save_hidden_announcements = self.parser.getboolean("Settings", 'save_hidden_announcements')
             self.load_previous_announcements = self.parser.getboolean("Settings", 'load_previous_announcements')
-            self.trim_announcements[0] = self.parser.getint("Settings", 'trim_announcements_0')
-            self.trim_announcements[1] = self.parser.getint("Settings", 'trim_announcements_1')
+            
+            try:
+                self.window_count = self.parser.getint("Settings", 'window_count')
+            except:
+                self.window_count = 2
+
+            self.trim_announcements = []
+            self.window_titles = []
+            for i in range(self.window_count):
+                try:
+                    val = self.parser.getint("Settings", 'trim_announcements_%d' % i)
+                except:
+                    val = 0
+                self.trim_announcements.append(val)
+                
+                try:
+                    title = self.parser.get("Settings", 'window_title_%d' % i)
+                except:
+                    title = "Window %d" % i
+                self.window_titles.append(title)
             self.word_color_dict={}
             self.default_bg = self.parser.get("Colors", 'default_background')
             for (color_name,color_value) in self.parser.items("Colors"):
@@ -93,6 +115,15 @@ class config(object):
                     self.word_color_dict[color_name]=fg_bg
 
     def save(self):
+        # Sync in-memory lists back to parser specific sections
+        if hasattr(self, 'window_titles'):
+            for i, title in enumerate(self.window_titles):
+                self.parser.set("Settings", 'window_title_%d' % i, str(title))
+
+        if hasattr(self, 'trim_announcements'):
+            for i, val in enumerate(self.trim_announcements):
+                self.parser.set("Settings", 'trim_announcements_%d' % i, str(val))
+
         with open(self.filepath, 'w') as fi:
             self.parser.write(fi)
 

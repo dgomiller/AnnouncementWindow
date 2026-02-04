@@ -275,11 +275,19 @@ class GroupBar(Tkinter.Frame):
 
         # Title row for window indices (uses the first category as reference)
         title_frame = Tkinter.Frame(self.category_frame)
+        
+        # Spacer to match the expand button in CategoryBar
+        Tkinter.Button(
+            title_frame, text=" ", width=1, state="disabled", relief="flat"
+        ).grid(row=0, column=0, sticky="w")
+
         gridrow = Tkinter.Frame(title_frame)
-        label_frame = Tkinter.Frame(gridrow, width=128, height=21, background="gray")
-        label_frame.pack_propagate(0)
-        Tkinter.Label(label_frame, text="Window Visibility:", anchor="e", background="gray").pack(side=RIGHT)
-        label_frame.grid(row=0, column=0, sticky="w")
+        
+        # Header for the Category Name column (width 15 matches CategoryBar)
+        # changed text to "Category" to fit, and align center/left
+        Tkinter.Label(
+            gridrow, text="Category", width=15, anchor="w", background="gray"
+        ).grid(row=0, column=0, sticky="w")
 
         col_ = 1
         # Determine window count from first category (if any)
@@ -293,10 +301,10 @@ class GroupBar(Tkinter.Frame):
 
         if first_cat and isinstance(getattr(first_cat, "show", {}), dict):
             for window in sorted(first_cat.show.keys()):
-                win_frame = Tkinter.Frame(gridrow, width=18, height=21)
-                win_frame.pack_propagate(0)
-                Tkinter.Label(win_frame, text=str(window).rjust(3), anchor="w", background="gray").pack(fill="both", expand=True)
-                win_frame.grid(row=0, column=col_)
+                # Use Label with width 2 to match the toggle buttons (width 2)
+                Tkinter.Label(
+                    gridrow, text=str(window), width=2, anchor="center", background="gray"
+                ).grid(row=0, column=col_)
                 col_ += 1
 
         gridrow.grid(row=0, column=1, sticky="w")
