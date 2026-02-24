@@ -132,6 +132,13 @@
                     "1": true
                 }
             },
+            "animalSlaughter": {
+                "category": "animalSlaughter",
+                "show": {
+                    "0": false,
+                    "1": false
+                }
+            },
             "farmCancellations": {
                 "category": "farmCancellations",
                 "show": {
@@ -172,8 +179,36 @@
         "group": "masterpiece",
         "color": "#0080c0",
         "categories": {
-            "Other/All": {
-                "category": "Other/All",
+            "cooking": {
+                "category": "cooking",
+                "show": {
+                    "0": false,
+                    "1": false
+                }
+            },
+            "crafting": {
+                "category": "crafting",
+                "show": {
+                    "0": false,
+                    "1": true
+                }
+            },
+            "building": {
+                "category": "building",
+                "show": {
+                    "0": false,
+                    "1": true
+                }
+            },
+            "writing": {
+                "category": "writing",
+                "show": {
+                    "0": false,
+                    "1": true
+                }
+            },
+            "lost": {
+                "category": "lost",
                 "show": {
                     "0": false,
                     "1": true
@@ -210,13 +245,6 @@
                 "show": {
                     "0": true,
                     "1": true
-                }
-            },
-            "slaughtering": {
-                "category": "slaughtering",
-                "show": {
-                    "0": false,
-                    "1": false
                 }
             }
         }
@@ -375,54 +403,6 @@
             }
         }
     },
-    "animals": {
-        "group": "animals",
-        "color": "#00ff40",
-        "categories": {
-            "training": {
-                "category": "training",
-                "show": {
-                    "0": false,
-                    "1": false
-                }
-            },
-            "vermin": {
-                "category": "vermin",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "grown": {
-                "category": "grown",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "birth": {
-                "category": "birth",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "drink": {
-                "category": "drink",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            },
-            "catAdoption": {
-                "category": "catAdoption",
-                "show": {
-                    "0": false,
-                    "1": true
-                }
-            }
-        }
-    },
     "missing": {
         "group": "missing",
         "color": "#ffff00",
@@ -431,7 +411,7 @@
                 "category": "missing",
                 "show": {
                     "0": true,
-                    "1": false
+                    "1": true
                 }
             }
         }
@@ -579,6 +559,54 @@
                 "category": "migrants",
                 "show": {
                     "0": true,
+                    "1": true
+                }
+            }
+        }
+    },
+    "animals": {
+        "group": "animals",
+        "color": "#00ff40",
+        "categories": {
+            "training": {
+                "category": "training",
+                "show": {
+                    "0": false,
+                    "1": false
+                }
+            },
+            "vermin": {
+                "category": "vermin",
+                "show": {
+                    "0": false,
+                    "1": true
+                }
+            },
+            "grown": {
+                "category": "grown",
+                "show": {
+                    "0": false,
+                    "1": true
+                }
+            },
+            "birth": {
+                "category": "birth",
+                "show": {
+                    "0": false,
+                    "1": true
+                }
+            },
+            "drink": {
+                "category": "drink",
+                "show": {
+                    "0": false,
+                    "1": true
+                }
+            },
+            "catAdoption": {
+                "category": "catAdoption",
+                "show": {
+                    "0": false,
                     "1": true
                 }
             }
